@@ -1,19 +1,26 @@
 import os
 import json
 import shutil
+import re
 from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, TRCK, APIC, TENC, TCOP
 from mutagen.mp3 import MP3, HeaderNotFoundError
+
+# Function to clean chapter titles
+def clean_chapter_title(title):
+    # Regular expression to match and remove unwanted patterns
+    cleaned_title = re.sub(r'\b(?:Ep|Ch|CP|Cp|EP|Ep|CH|Ch)-?\d*-*\s*', '', title).strip()
+    return cleaned_title
 
 # Read the chapters file
 with open("chapters.json", "r", encoding="utf-8") as file:
     chapters = json.load(file)
 
-start = 0
-end = min(500, len(chapters))  # Ensure we don't go out of bounds
+start = 170
+end = min(600, len(chapters))  # Ensure we don't go out of bounds
 input_path = "./source"
 output_path = "./Output"
 cover_photo_path = "./cover.jpg"
-title = "The Legendary Mechanic"
+title = "Rekindled Fire"
 author = "@PocketFmEnglish2(Telegram)"
 author_url = "https://telegram.me/+-5sdzXfC0f8xNDI9"  # Added author URL
 contributing_artist = "@PFM_Daily(Telegram)"
@@ -47,7 +54,7 @@ def add_id3_tags(file_path, chapter_num, chapter_name):
     if audio.tags is None:
         audio.add_tags()
 
-    audio.tags.add(TIT2(encoding=3, text=f"Ep. {chapter_num} - {chapter_name}"))
+    audio.tags.add(TIT2(encoding=3, text=f"EP {chapter_num} - {chapter_name}"))
     audio.tags.add(TALB(encoding=3, text=title))
     audio.tags.add(TPE1(encoding=3, text=f"{author} ({author_url})"))  # Author with URL
     audio.tags.add(TPE2(encoding=3, text=contributing_artist))  # Contributing artist
@@ -65,6 +72,7 @@ missing_files = []
 
 for i in range(start, end):
     chapter = chapters[i].replace("?", "")
+    cleaned_chapter = clean_chapter_title(chapter)
     original_file_name = f"{i + 1}.mp3"
     original_file_path = os.path.join(input_path, original_file_name)
     
@@ -88,7 +96,7 @@ for i in range(start, end):
         continue
     
     print(f"Adding ID3 tags to: {new_file_name}")
-    add_id3_tags(new_file_path, i + 1, chapter)
+    add_id3_tags(new_file_path, i + 1, cleaned_chapter)
 
 if missing_files:
     print(f"Missing audio files: {', '.join(missing_files)}")
