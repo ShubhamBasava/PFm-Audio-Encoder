@@ -15,12 +15,12 @@ def clean_chapter_title(title):
 with open("chapters.json", "r", encoding="utf-8") as file:
     chapters = json.load(file)
 
-start = 170
-end = min(600, len(chapters))  # Ensure we don't go out of bounds
+start = 724
+end = min(725, len(chapters))  # Ensure we don't go out of bounds
 input_path = "./source"
 output_path = "./Output"
 cover_photo_path = "./cover.jpg"
-title = "Rekindled Fire"
+title = "The Chosen One"
 author = "@PocketFmEnglish2(Telegram)"
 author_url = "https://telegram.me/+-5sdzXfC0f8xNDI9"  # Added author URL
 contributing_artist = "@PFM_Daily(Telegram)"
