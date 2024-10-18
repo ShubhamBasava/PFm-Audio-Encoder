@@ -4,7 +4,7 @@ import re
 # Function to clean chapter titles
 def clean_chapter_title(title):
     # Regular expression to match and remove any "Ep-", "EP-", "Ch-", "CH-", "Cp-", "CP-" parts
-    cleaned_title = re.sub(r'\b(?:Ep|EP|Ch|CH|Cp|CP)-*\s*\d*\s*-*\s*', '', title).strip()
+    cleaned_title = re.sub(r'\b(?:Ep|Episode|EP|-)-*\s*\d*\s*-*\s*', '', title).strip()
     return cleaned_title
 
 # Function to double-check and clean chapter titles
